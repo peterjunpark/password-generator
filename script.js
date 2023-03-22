@@ -13,12 +13,12 @@ var passwordCriteria = {
   numOfChars: 16,
 
   getLength: function () {
-    var lengthInput = prompt(
+    var desiredLength = prompt(
       "Enter the length of your generated password (must contain at least 8 and no more than 128 characters).",
       this.numOfChars
     );
-    if (lengthInput > 8 && lengthInput < 128) {
-      this.numOfChars = lengthInput;
+    if (desiredLength > 8 && desiredLength < 128) {
+      this.numOfChars = desiredLength;
       this.getChars();
     } else {
       alert(
@@ -29,23 +29,23 @@ var passwordCriteria = {
   },
 
   getChars: function () {
-    for (key in this.includeChars) {
+    for (var key in this.includeChars) {
       this.includeChars[key] = confirm(
         `Would you like your generated password to include ${key}?\n\nSelect 'OK' to include them or 'Cancel' to exclude them.`
       );
     }
-    console.log(this.includeChars);
-    // this.printCriteria();
+    this.printCriteria();
   },
 
-  // printCriteria: function() {
-  //   var criteria = `Your generated password will include ${this.numOfChars} characters and consist of the following character sets:`
-  //   for (v of passwordCriteria) {
-  //     if (v) {
-  //       criteria += `\n`
-  //     }
-  //   }
-  // }
+  printCriteria: function() {
+    var desiredCriteria = `Your generated password will include ${this.numOfChars} characters and consist of the following character sets:\n`
+    for (var key in this.includeChars) {
+      if (this.includeChars[key]) {
+        desiredCriteria +=  "\n · " + key.charAt(0).toUpperCase() + key.slice(1);
+      }
+    }
+    if (!confirm(desiredCriteria)) this.getLength();
+  }
 };
 
 function generatePassword() {
