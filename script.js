@@ -7,7 +7,7 @@ var passwordCriteria = {
   includeChars: {
     "lowercase letters": true,
     "uppercase letters": true,
-    "numbers": true,
+    numbers: true,
     "special characters": true,
   },
   numOfChars: 16,
@@ -29,21 +29,11 @@ var passwordCriteria = {
   },
 
   getChars: function () {
-    var charsPrompt = "Would you like your generated password to include";
-    var charsPromptInstruct =
-      "\n\nSelect 'OK' to include them or 'Cancel' to exclude them.";
-    this.includeChars["lowercase letters"] = confirm(
-      `${charsPrompt} lowercase letters?${charsPromptInstruct}`
-    );
-    this.includeChars["uppercase letters"] = confirm(
-      `${charsPrompt} uppercase letters?${charsPromptInstruct}`
-    );
-    this.includeChars["numbers"] = confirm(
-      `${charsPrompt} numbers?${charsPromptInstruct}`
-    );
-    this.includeChars["special characters"] = confirm(
-      `${charsPrompt} special characters?${charsPromptInstruct}`
-    );
+    for (key in this.includeChars) {
+      this.includeChars[key] = confirm(
+        `Would you like your generated password to include ${key}?\n\nSelect 'OK' to include them or 'Cancel' to exclude them.`
+      );
+    }
     console.log(this.includeChars);
     // this.printCriteria();
   },
