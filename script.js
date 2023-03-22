@@ -2,8 +2,14 @@
 var generateBtn = document.querySelector("#generate");
 
 var passwordCriteria = {
-  chars: " !\"#$%&'()*+,-./:;<=>?@[]^_`{|}~",
-  includedChars: [true, true, true, true],
+  chars:
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJIKLMNOPQRSTUVWXYZ0123456789 !\"#$%&'()*+,-./:;<=>?@[]^_`{|}~",
+  includeChars: {
+    "lowercase letters": true,
+    "uppercase letters": true,
+    "numbers": true,
+    "special characters": true,
+  },
   numOfChars: 16,
 
   getLength: function () {
@@ -18,19 +24,38 @@ var passwordCriteria = {
       alert(
         "Your generated password must contain at least 8 and no more than 128 characters.\n\nEnter your desired password length."
       );
-      this.getLength();
+      this.getLength(); // recurse if user response is invalid
     }
   },
 
   getChars: function () {
     var charsPrompt = "Would you like your generated password to include";
-    var charsPromptInstruct = "\n\nSelect 'OK' to include them or 'Cancel' to exclude them."
-    this.includedChars[0] = confirm(`${charsPrompt} lowercase letters?${charsPromptInstruct}`);
-    this.includedChars[1] = confirm(`${charsPrompt} uppercase letters?${charsPromptInstruct}`);
-    this.includedChars[2] = confirm(`${charsPrompt} numbers?${charsPromptInstruct}`);
-    this.includedChars[3] = confirm(`${charsPrompt} special characters?${charsPromptInstruct}`);
-    console.log(this.includedChars);
+    var charsPromptInstruct =
+      "\n\nSelect 'OK' to include them or 'Cancel' to exclude them.";
+    this.includeChars["lowercase letters"] = confirm(
+      `${charsPrompt} lowercase letters?${charsPromptInstruct}`
+    );
+    this.includeChars["uppercase letters"] = confirm(
+      `${charsPrompt} uppercase letters?${charsPromptInstruct}`
+    );
+    this.includeChars["numbers"] = confirm(
+      `${charsPrompt} numbers?${charsPromptInstruct}`
+    );
+    this.includeChars["special characters"] = confirm(
+      `${charsPrompt} special characters?${charsPromptInstruct}`
+    );
+    console.log(this.includeChars);
+    // this.printCriteria();
   },
+
+  // printCriteria: function() {
+  //   var criteria = `Your generated password will include ${this.numOfChars} characters and consist of the following character sets:`
+  //   for (v of passwordCriteria) {
+  //     if (v) {
+  //       criteria += `\n`
+  //     }
+  //   }
+  // }
 };
 
 function generatePassword() {
