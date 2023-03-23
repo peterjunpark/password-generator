@@ -11,13 +11,14 @@ function generatePassword() {
   var passwordInit = function () { //Get password length.
     passwordLength = prompt("Enter the length of your generated password.\n\nYour password must contain at least 8 and no more than 128 characters.",
     passwordLength);
+
     if (passwordLength === null)
       return; // Allow user to exit by clicking Cancel.
     else if (passwordLength < 8 || passwordLength > 128) {
       alert(
         "Your generated password must contain at least 8 and no more than 128 characters.\n\nEnter your desired password length."
       );
-      passwordInit(); // Recurse if check fails.
+      passwordInit(); // Print message and recurse if check fails.
     }
     while (passwordLength > 0) { // Initialize password char container with array length equal to password length.
       passwordArr.push("");
@@ -27,12 +28,12 @@ function generatePassword() {
   };
 
   var getChars = function () {
-    charsets = {
+    charsets = { // Available charsets unless rejected by user. Reset upon function call.
       "lowercase letters": "abcdefghijklmnopqrstuvwxyz",
       "uppercase letters": "ABCDEFGHIJIKLMNOPQRSTUVWXYZ",
       numbers: "0123456789",
       "special characters": " \$\!\"\#%&'()*+,-./:;<=>?@[]^_`{|}~",
-    }; // Available charsets unless rejected by user. Reset upon function call.
+    };
 
     if (
       confirm(
@@ -52,10 +53,10 @@ function generatePassword() {
       if (!Object.keys(charsets).length) {
         // Check if charsets object is empty.
         alert("You must select at least 1 character set.\n\nPlease try again.");
-        getChars(); // Recurse if no charcter sets are selected.
+        getChars(); // Print message and recurse if charsets is empty selected.
       } else {
         uniqueCharsets = Object.keys(charsets).length;
-        for (var prop in charsets) {
+        for (var prop in charsets) { // Combine all available characters for ease of access.
           concCharset += charsets[prop];
         }
         writeCriteria();
@@ -72,13 +73,13 @@ function generatePassword() {
     alert(criteria);
   };
 
-  passwordInit(); // Main password generation logic starts.
-
-  // Put a random char from each unique charset into the password.
+  // Main password generation logic starts.
+  passwordInit(); 
+  // Insurance: at least 1 one random char from each set will ALWAYS be included in the password in random places.
   while (uniqueCharsets > 0) {
     var i = Math.floor(Math.random() * (passwordArr.length - 1));
-
     for (var prop in charsets) {
+      // Make sure chars that have already been placed are not overwritten.
       if (passwordArr[i]) break;
       else {
         passwordArr[i] = charsets[prop].charAt(Math.floor(Math.random() * charsets[prop].length));
@@ -88,9 +89,7 @@ function generatePassword() {
     }
   }
 
-  console.log(passwordArr);
-
-  for (var i = 0; i < passwordArr.length; i++) { // Add a random character from concCharset to each empty space.
+  for (var i = 0; i < passwordArr.length; i++) { // Fill out rest of the password.
     if (!passwordArr[i]) {
         passwordArr[i] += concCharset[Math.floor(Math.random() * concCharset.length)];
     }
