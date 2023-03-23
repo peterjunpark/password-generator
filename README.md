@@ -36,8 +36,7 @@ The following is a brief outline of logic used to satisfy the acceptance criteri
 2. #### Receive the user's desired character sets through a sequence of 4 boolean prompts.
    1. Validate that the user has chosen at least 1 character set.
    2. If validation fails, restart sequence.
-   3. The user may click Cancel to return to the previous step.
-   4. Print user's chosen password criteria.
+   3. Print user's chosen password criteria.
 3. #### Ensure that at least 1 of each chosen character set appears in the generated password.
    > Note that if we simply pull random characters from the user's desired character pool, we cannot guarantee that the generated password satisfies the user's criteria. If we aggregate the chosen character sets into a single pool and get random characters from this pool, there is a small chance that 0 characters from a particular set are used.   
    1. Separate the user's chosen character sets.
