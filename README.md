@@ -33,27 +33,27 @@ The application:
 The following is a brief outline of logic used to satisfy the acceptance criteria.
 1. #### Receive the user's desired password length.
    1. Validate the user's input so that it is between 8 and 128 (inclusive).
-   2. If validation fails, ask user to reinput.
+   2. If validation fails, ask user to input a new password length.
    3. The user may click Cancel to exit.
 2. #### Receive the user's desired character sets through a sequence of 4 boolean prompts.
    1. Validate that the user has chosen at least 1 character set.
-   2. If validation fails, restart sequence.
-   3. Print user's chosen password criteria.
+   2. If validation fails, restart the sequence of character set selection prompts.
+   3. Print the user's selected password criteria.
 3. #### Ensure that at least 1 of each chosen character set appears in the generated password.
    > Note that if we simply pull random characters from the user's desired character pool, we cannot guarantee that the generated password satisfies the user's criteria. If we aggregate the chosen character sets into a single pool and get random characters from this pool, there is a small chance that 0 characters from a particular set are used.   
-   1. Separate the user's chosen character sets.
-   2. Get 1 random character from each chosen character set and put them in random locations in the password.
+   1. Separate the user's selected character sets.
+   2. Get 1 random character from each selected character set and put them in random locations in the password.
    
 ![image](https://user-images.githubusercontent.com/115042610/227349459-ef65be54-3252-4519-86e4-f579135ab847.png)
 
    
 4. #### Generate the rest of the password.
-   1. Concatenate the chosen character sets into a single string.
-   2. For each empty space in the password, add the random character.
+   1. Concatenate the chosen character sets into a single string for ease of access.
+   2. For each empty space in the password, add a random character from the string.
    
 ![image](https://user-images.githubusercontent.com/115042610/227349837-ce524cda-9b7c-4ce9-9158-84eaf32543d1.png)
 
-5. #### Print the generated password.
+5. #### Print the generated password fulfilling the user's selected criteria.
    
         
 
