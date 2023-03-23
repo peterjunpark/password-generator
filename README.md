@@ -41,15 +41,16 @@ The following is a brief outline of logic used to satisfy the acceptance criteri
    3. Print the user's selected password criteria.
 3. #### Ensure that at least 1 of each chosen character set appears in the generated password.
    > Note that if we simply pull random characters from the user's desired character pool, we cannot guarantee that the generated password satisfies the user's criteria. If we aggregate the chosen character sets into a single pool and get random characters from this pool, there is a small chance that 0 characters from a particular set are used.   
-   1. Separate the user's selected character sets.
-   2. Get 1 random character from each selected character set and put them in random locations in the password.
+   1. Separate the user's selected character sets in an object.
+   2. Create a password template to easily inject characters in random locations in the password.
+   3. Get 1 random character from each selected character set and put them in password template at random indexes.
    
 ![image](https://user-images.githubusercontent.com/115042610/227349459-ef65be54-3252-4519-86e4-f579135ab847.png)
 
    
 4. #### Generate the rest of the password.
-   1. Concatenate the chosen character sets into a single string for ease of access.
-   2. For each empty space in the password, add a random character from the string.
+   1. Concatenate each selected character set into a single string for ease of access.
+   2. Loop through the password template and add a random character at each empty location.
    
 ![image](https://user-images.githubusercontent.com/115042610/227349837-ce524cda-9b7c-4ce9-9158-84eaf32543d1.png)
 
