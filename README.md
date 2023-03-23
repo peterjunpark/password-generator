@@ -40,8 +40,9 @@ The following is a brief outline of logic used to satisfy the acceptance criteri
    2. If validation fails, restart the sequence of character set selection prompts.
    3. Print the user's selected password criteria.
 3. #### Ensure that at least 1 of each chosen character set appears in the generated password.
-   > Note that if we simply pull random characters from the user's desired character pool, we cannot guarantee that the generated password satisfies the user's criteria. If we aggregate the chosen character sets into a single pool and get random characters from this pool, there is a small chance that 0 characters from a particular set are used.   
    1. Separate the user's selected character sets in an object.
+   
+   > Note that if we aggregate the chosen character sets into a single pool and get random characters from this pool, there is a small chance that 0 characters from a particular set are used.   
    2. Create a password template to easily inject characters in random locations in the password.
    3. Get 1 random character from each selected character set and put them in password template at random indexes.
    
