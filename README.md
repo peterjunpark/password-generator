@@ -3,7 +3,9 @@
 
 ## Description
 ### What is this?
-A password generator created based on the following acceptance criteria:
+A password generator that accepts the user's desired password length and character sets to generate a random password satisfying those criteria.
+
+This application was created based on the following acceptance criteria:
 ```
 GIVEN I need a new, secure password
 WHEN I click the button to generate a password
