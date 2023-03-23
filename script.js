@@ -1,84 +1,97 @@
 // Assignment Code
 var generateBtn = document.querySelector("#generate");
 
-var passwordCriteria = {
-  numOfChars: 16,
-  chars: {
-    "lowercase letters": "",
-    "uppercase letters": "",
-    numbers: "",
-    "special characters": "",
-  },
+function generatePassword() {
+  var passwordLength = 8;
+  var charsets = {};
+  var uniqueCharsets = 4;
+  var concCharset = "";
+  var criteriaChecked = false;
+  var passwordArr = [];
 
-  getNumOfChars: function () {
-    var desiredLength = prompt(
-      "Enter the length of your generated password.\n\nYour password must contain at least 8 and no more than 128 characters.",
-      this.numOfChars
-    );
-    if (desiredLength >= 8 && desiredLength <= 128) {
-      this.numOfChars = desiredLength;
-      this.getCharSets();
-    } else if (desiredLength !== null) {
-      alert(
-        "Your generated password must contain at least 8 and no more than 128 characters.\n\nEnter your desired password length."
-      );
-      this.getNumOfChars(); // Recurse if user response is invalid
+  var passwordInit = function () { //Get password length.
+    passwordLength = prompt("Enter the length of your generated password.\n\nYour password must contain at least 8 and no more than 128 characters.", passwordLength);
+
+    if (passwordLength >= 8 && passwordLength <= 128) getChars();
+    else if (passwordLength !== null) {
+      alert("Your generated password must contain at least 8 and no more than 128 characters.\n\nEnter your desired password length.");
+      passwordInit(); // Print message and recurse if check fails.
     }
-  },
+    while (passwordLength > 0) {
+      // Initialize password char container with array length equal to password length.
+      passwordArr.push("");
+      passwordLength--;
+    }
+  };
 
-  getCharSets: function () {
-    //Assign charsets here to add back the string of characters if user clicks "Generate Password" without refreshing the page
-    this.chars["lowercase letters"] = "abcdefghijklmnopqrstuvwxyz";
-    this.chars["uppercase letters"] = "ABCDEFGHIJIKLMNOPQRSTUVWXYZ";
-    this.chars["numbers"] = "0123456789";
-    this.chars["special characters"] = " !\"#$%&'()*+,-./:;<=>?@[]^_`{|}~";
+  var getChars = function () {
+    charsets = { // Available charsets unless rejected by user. Reset upon function call.
+      "lowercase letters": "abcdefghijklmnopqrstuvwxyz",
+      "uppercase letters": "ABCDEFGHIJIKLMNOPQRSTUVWXYZ",
+      numbers: "0123456789",
+      "special characters": " $!\"#%&'()*+,-./:;<=>?@[]^_`{|}~",
+    }
 
-    if (
-      confirm(
-        "Select which character sets to include in your generate password using the following prompts."
-      )
-    ) {
-      for (var charset in this.chars) {
-        if (
-          !confirm(
-            `Would you like your generated password to include ${charset}?\n\nSelect 'OK' to include them or 'Cancel' to exclude them.`
-          )
-        ) {
-          this.chars[charset] = "";
+    if (confirm("Select which character sets to include in your generated password using the following prompts.")) {
+      // Loop through charsets object and print the name of each character set with each prompt.
+      for (var prop in charsets) {
+        if (!confirm(`Would you like your generated password to include ${prop}?\n\nSelect "OK" to include them or "Cancel" to exclude them.`)) {
+          delete charsets[prop];
         }
       }
-      this.validateCriteria();
-    } else {
-      this.getNumOfChars();
-    }
-  },
 
-  validateCriteria: function () {
-    var desiredCriteria = "";
-    for (var charset in this.chars) {
-      if (this.chars[charset]) {
-        // Checks that at least 1 character set is selected
-        desiredCriteria +=
-          "\n · " + charset.charAt(0).toUpperCase() + charset.slice(1); // Capitalize first letter when displaying name of character set
+      if (!Object.keys(charsets).length) { // Check if charsets object is empty.
+        alert("You must select at least 1 character set.\n\nPlease try again.");
+        getChars(); // Print message and recurse if charsets is empty.
+        return false;
+      } else {
+        uniqueCharsets = Object.keys(charsets).length;
+        for (var prop in charsets) { // Combine all available characters for ease of access.
+          concCharset += charsets[prop];
+        }
+        checkCriteria();
       }
     }
-    if (!desiredCriteria) {
-      alert("You must select at least 1 character set.\n\nPlease try again.");
-      this.getChars();
-    } else if (!desiredCriteria) this.getChars();
-    else {
-      alert(
-        `Your generated password will include ${this.numOfChars} characters and include the following character sets:\n${desiredCriteria}`
-      );
+  };
+
+  var checkCriteria = function () {
+    var criteria = `Your generated password will contain ${passwordLength} characters and include the following character sets:\n`;
+
+    for (var prop in charsets) {
+      criteria += "\n - " + prop.charAt(0).toUpperCase() + prop.slice(1);
     }
-    console.log(this.chars);
-  },
-};
-
-function generatePassword() {
-  passwordCriteria.getNumOfChars();
+    if (confirm(criteria)) criteriaChecked = true;
+  };
   
+  // Main password generation logic starts.
+  passwordInit();
+  if (criteriaChecked) {
+    // Insurance: at least 1 one random char from each set will ALWAYS be included in the password in random places.
+    while (uniqueCharsets > 0) {
+      var i = Math.floor(Math.random() * (passwordArr.length - 1));
+      for (var prop in charsets) {
+        // Make sure chars that have already been placed are not overwritten.
+        if (passwordArr[i]) break;
+        else {
+          passwordArr[i] = charsets[prop].charAt(
+            Math.floor(Math.random() * charsets[prop].length)
+          );
+          uniqueCharsets--;
+          delete charsets[prop];
+        }
+      }
+    }
 
+    for (var i = 0; i < passwordArr.length; i++) {
+      // Fill out rest of the password.
+      if (!passwordArr[i]) {
+        passwordArr[i] +=
+          concCharset[Math.floor(Math.random() * concCharset.length)];
+      }
+    }
+    return passwordArr.join("");
+  }
+  return "";
 }
 
 // Write password to the #password input
